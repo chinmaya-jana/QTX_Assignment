@@ -4,6 +4,8 @@ import com.devapp.redisOP.exception.RedisOperationException;
 import com.devapp.redisOP.repository.RedisRepository;
 import com.devapp.redisOP.service.RedisService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class RedisServiceImpl implements RedisService {
+    private static final Logger log = LoggerFactory.getLogger(RedisServiceImpl.class);
     private final RedisRepository redisRepository;
 
     @Override
@@ -21,6 +24,7 @@ public class RedisServiceImpl implements RedisService {
             return redisRepository.get(key);
         }
         catch (Exception ex) {
+            log.error("Failed to set key '{}' in Redis. Error: {}", key, ex.getMessage(), ex);
             throw new RedisOperationException("Failed to set value in Redis: " + ex.getMessage());
         }
     }
@@ -31,6 +35,7 @@ public class RedisServiceImpl implements RedisService {
             return redisRepository.get(key);
         }
         catch (Exception ex) {
+            log.error("Failed to fetch key '{}' from Redis. Error: {}", key, ex.getMessage(), ex);
             throw new RedisOperationException("Failed to fetch the key in Redis: " + ex.getMessage());
         }
     }
@@ -40,8 +45,9 @@ public class RedisServiceImpl implements RedisService {
         try {
             return redisRepository.delete(key);
         }
-        catch (Exception e) {
-            throw new RedisOperationException("Failed to delete the key in Redis: " + e.getMessage());
+        catch (Exception ex) {
+            log.error("Failed to delete key '{}' from Redis. Error: {}", key, ex.getMessage(), ex);
+            throw new RedisOperationException("Failed to delete the key in Redis: " + ex.getMessage());
         }
     }
 
@@ -52,6 +58,7 @@ public class RedisServiceImpl implements RedisService {
             return redisRepository.lrange(key, 0, -1);
         }
         catch (Exception ex) {
+            log.error("Failed to LPUSH into key '{}' in Redis. Error: {}", key, ex.getMessage(), ex);
             throw new RedisOperationException("Failed to set value in Redis: " + ex.getMessage());
         }
     }
@@ -63,6 +70,7 @@ public class RedisServiceImpl implements RedisService {
             return redisRepository.lrange(key, 0, -1);
         }
         catch (Exception ex) {
+            log.error("Failed to RPUSH into key '{}' in Redis. Error: {}", key, ex.getMessage(), ex);
             throw new RedisOperationException("Failed to set value in Redis: " + ex.getMessage());
         }
     }
@@ -72,8 +80,9 @@ public class RedisServiceImpl implements RedisService {
         try {
             return redisRepository.lrange(key, 0, -1);
         }
-        catch (Exception e) {
-            throw new RedisOperationException("Failed to fetch the key in Redis: " + e.getMessage());
+        catch (Exception ex) {
+            log.error("Failed to fetch list for key '{}' from Redis. Error: {}", key, ex.getMessage(), ex);
+            throw new RedisOperationException("Failed to fetch the key in Redis: " + ex.getMessage());
         }
     }
 
@@ -82,8 +91,9 @@ public class RedisServiceImpl implements RedisService {
         try {
             return redisRepository.exists(key);
         }
-        catch (Exception e) {
-            throw new RedisOperationException("Failed to fetch the key in Redis: " + e.getMessage());
+        catch (Exception ex) {
+            log.error("Failed to check existence of key '{}' in Redis. Error: {}", key, ex.getMessage(), ex);
+            throw new RedisOperationException("Failed to fetch the key in Redis: " + ex.getMessage());
         }
     }
 }

@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
     // Handle Redis-specific errors
     @ExceptionHandler(RedisOperationException.class)
     public ResponseEntity<ApiResponse<String>> handleRedisError(RedisOperationException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse<>(false, ex.getMessage(), null));
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(new ApiResponse<>(false, "Redis unavailable: " + ex.getMessage(), null));
     }
 
     // Handle generic errors

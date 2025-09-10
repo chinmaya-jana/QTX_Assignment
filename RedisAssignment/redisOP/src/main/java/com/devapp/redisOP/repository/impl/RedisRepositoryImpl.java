@@ -54,6 +54,6 @@ public class RedisRepositoryImpl implements RedisRepository {
 
     @Override
     public Boolean exists(String key) {
-        return redisTemplate.hasKey(key);
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 }
