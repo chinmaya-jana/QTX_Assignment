@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: kafkaredis
+  zookeeper:
+    port: 2181
+  kafka:
+    bootstrap-servers: localhost:9092
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 8080
